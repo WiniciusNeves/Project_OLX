@@ -1,0 +1,57 @@
+.container-header input[type=button] {
+    float: right;
+    margin: 15px 50px 5px 15px;
+    
+}
+
+input[type=button] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 25px;
+    border: 1px solid #4CAF50;
+}
+
+input[type=button]:hover {
+    background:#ffb515;
+    color: #67009b ;
+    border: 1px solid #ffb515 ;
+}
+
+
+.box {
+    background-color: #e7e7e794;
+    color: rebeccapurple;
+    padding: 15px 32px;
+    display: inline-block;
+    object-fit: cover;
+    font-size: 16px;
+    border-radius: 25px;
+    margin: 0px 15px 15px 0px;
+    transition: border-radius 0.25s ease-in-out, transform 0.25s ease-in-out;
+    position: relative;
+    top: 5rem;
+    left: 45rem;
+}
+
+.box:hover {
+    border-radius: 50%;
+    transform: scale(1.1);
+    background-color: #cecece94 ;
+    border: 1px solid rebeccapurple ;
+}
+
+.box img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    text-align: center;
+    align-items: center;
+
+}
+
+
