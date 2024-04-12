@@ -15,7 +15,7 @@
             <img src="./public/images/OLX-logo-big.png" alt="" width="50" height="50"
                 style="margin: 10px 50px 0px 50px;">
             <a href="Anunciar.php"><input type="button" value="Anunciar"></a>
-            <a href="login.php"><input type="button" value="Login" style="background-color: white; color: black"></a>
+            <a href="./views/login.php"><input type="button" value="Login" style="background-color: white; color: black"></a>
         </div>
     </header>
     <aside>
