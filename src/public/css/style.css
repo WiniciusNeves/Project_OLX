@@ -1,7 +1,7 @@
 .container-header input[type=button] {
     float: right;
     margin: 15px 50px 5px 15px;
-    
+
 }
 
 input[type=button] {
@@ -17,11 +17,10 @@ input[type=button] {
 }
 
 input[type=button]:hover {
-    background:#ffb515;
-    color: #67009b ;
-    border: 1px solid #ffb515 ;
+    background: #ffb515;
+    color: #67009b;
+    border: 1px solid #ffb515;
 }
-
 
 .box {
     background-color: #e7e7e794;
@@ -39,11 +38,12 @@ input[type=button]:hover {
 }
 
 .box:hover {
-    border-radius: 50%;
+    border-radius: 40%;
     transform: scale(1.1);
-    background-color: #cecece94 ;
-    border: 1px solid rebeccapurple ;
+    background-color: rgba(245, 222, 179, 0.26);
+    border: 1px solid rebeccapurple;
 }
+
 
 .box img {
     width: 50px;
@@ -53,5 +53,3 @@ input[type=button]:hover {
     align-items: center;
 
 }
-
-
