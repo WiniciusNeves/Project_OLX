@@ -1,24 +1,26 @@
 <?php
+include './views/config.php';
 $modalScript = '';
 if (isset($_GET['anunciar'])) {
     $modalScript = '<script>
-            document.addEventListener("DOMContentLoaded", function() {
-                var modal = document.getElementById("meuModal");
-                var span = document.getElementsByClassName("fechar")[0];
+        document.addEventListener("DOMContentLoaded", function() {
+            var modal = document.getElementById("meuModal");
+            var span = document.getElementsByClassName("fechar")[0];
 
-                modal.style.display = "block";
+            modal.style.display = "block";
 
-                span.onclick = function() {
+            span.onclick = function() {
+                modal.style.display = "none";
+                window.location.href = "index.php";
+            };
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
                     modal.style.display = "none";
                 }
-
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
-                }
-            });
-        </script>';
+            };
+        });
+    </script>';
 }
 ?>
 
@@ -36,8 +38,10 @@ if (isset($_GET['anunciar'])) {
     <header>
         <div class="container-header" style="border-bottom:1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-radius : 0px 0px 10px 10px; height: 80px;">
             <img src="./public/images/OLX-logo-big.png" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;">
-            <a href="?anunciar=1"><input type="button" value="Anunciar"></a>
-            <a href="./views/login.php"><input type="button" value="Login" style="background-color: white; color: black"></a>
+            <a href="?anunciar"><input type="button" value="Anunciar"></a>
+            <a href="./views/login.php"><input type="button" value="Login"></a>
+            
+
         </div>
     </header>
     <aside>
@@ -66,16 +70,46 @@ if (isset($_GET['anunciar'])) {
     </aside>
     <main>
         <div class="container-main">
-            <span style="font-size: 20px ; font-weight: bold ; color: rebeccapurple; text-decoration: underline ; position: relative; top: 100px ; left: 80px">
+            <span style="font-size: 20px; font-weight: bold; color: rebeccapurple; text-decoration: underline; position: relative; top: 100px; left: 80px">
                 Mais recentes
                 <hr style="position: fixed; left: 70px; border: 1px solid rebeccapurple; width: 25vw;" />
             </span>
         </div>
+        <div class="container-posts">
+            <?php
+
+            $sql = "SELECT * FROM posts ORDER BY id DESC";
+            $result = $con->query($sql);
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo '<div class="post">
+                    <a href="view.php?id=' . $row['id'] . '">
+                        <div class="image">
+                            <img src="data:image/jpeg;base64,' . base64_encode($row['image']) . '" alt="" width="250" height="250">
+                        </div>
+                        <div class="title">
+                            <h1>' . $row['title'] . '</h1>
+                        </div>
+                        <div class="description">
+                            <p>' . $row['description'] . '</p>
+                        </div>
+                        <div class="price">
+                            <h1>R$ ' . $row['price'] . '</h1>
+                        </div>
+                    </a>
+                </div>';
+                }
+            }
+
+
+            ?>
+        </div>
+
         <div id="meuModal" class="modal" style="display: none; width: 100%; height: 100%; background-color: rgba(128, 128, 128, 0.5); position: fixed; top: 0; z-index: 1">
             <div class="modal-conteudo" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 25rem; padding: 40px ; box-sizing: border-box; border-radius: 5px; box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6); background-color: white; color: rebeccapurple;">
-                <span class="fechar" style="position: absolute; top: 10px; right: 10px; font-size: 25px; cursor: pointer" >&times;</span>
+                <span class="fechar" style="position: absolute; top: 10px; right: 10px; font-size: 25px; cursor: pointer">&times;</span>
                 <h1 style="text-align: center;">Anuncio</h1>
-                <form action="Anunciar.php" method="post" enctype="multipart/form-data">
+                <form action="#" method="post" enctype="multipart/form-data">
                     <label for="title">Título:</label><br>
                     <input type="text" id="title" name="title" required><br><br>
                     <label for="price">Preço:</label><br>
@@ -86,11 +120,11 @@ if (isset($_GET['anunciar'])) {
                     <input type="file" id="image" name="image[]" accept="image/*" multiple required><br><br>
                     <input type="submit" value="Enviar">
                 </form>
-                
+
             </div>
         </div>
         <footer style="position: fixed; bottom: 0; width: 100vw; height: 30px; background-color: black; color: white; font-size: 8px; text-align: center; border-radius: 0px 0px 10px 10px">
-            <h1>Direitos Reservados - 2024 por ||Winicius Neves || João Brasil || Vinicius Anacleto || Matheus Ziem ||</h1>
+            <h1>Direitos Reservados - 2024 por || Winicius Neves || João Brasil || Vinicius Anacleto || Matheus Ziem ||</h1>
         </footer>
 
         <?php echo $modalScript; ?>

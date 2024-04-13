@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <form action="index.php" method="post">
+    <form action="#" method="post">
         <div class="container-login">
             <h1>Register</h1>
             <p>Please fill in this form to register</p>
@@ -40,26 +40,27 @@
 
     <?php
     include('config.php');
-
     if (isset($_POST['submit'])) {
         $name = $_POST['Name'];
         $email = $_POST['Email'];
         $password = $_POST['Password'];
         $confirmPassword = $_POST['ConfirmPassword'];
         $phone = $_POST['Phone'];
-        if ($password == $confirmPassword) {
-            $sql = "INSERT INTO users (Name, Email, Password, Phone, Role) VALUES ('$name', '$email', '$password', '$phone', 'regular')";
-            $result = mysqli_query($con, $sql);
-            if ($result) {
-                header("Location: index.php");
+        if ($password === $confirmPassword) {
+            $sql = "INSERT INTO users (`name`, `email`, `password`, `phone`, `role`) VALUES (?, ?, ?, ?, 'regular')";
+            $stmt = mysqli_prepare($con, $sql);
+            mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $password, $phone);
+            mysqli_stmt_execute($stmt);
+            if (mysqli_stmt_affected_rows($stmt) == 1) {
+                header("Location: login.php");
             } else {
-                echo "Error: " . $sql . "<br>" . mysqli_error($con);
+                echo "Error: " . mysqli_error($con);
             }
+            mysqli_stmt_close($stmt);
         } else {
             echo "Password and Confirm Password are not the same";
         }
     }
-
     ?>
 
 </body>
