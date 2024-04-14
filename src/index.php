@@ -30,7 +30,7 @@ if (isset($_GET['anunciar'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OLX Copy</title>
+    <title>OLX</title>
     <link rel="stylesheet" href="./public/css/style.css">
 </head>
 
@@ -39,9 +39,23 @@ if (isset($_GET['anunciar'])) {
         <div class="container-header" style="border-bottom:1px solid black; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-radius : 0px 0px 10px 10px; height: 80px;">
             <img src="./public/images/OLX-logo-big.png" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;">
             <a href="?anunciar"><input type="button" value="Anunciar"></a>
-            <a href="./views/login.php"><input type="button" value="Login"></a>
-            
-
+            <?php
+            $password = ($_GET['password']);
+            $sql = "SELECT * FROM users WHERE `password` = ?";
+    
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("s", $password);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $_SESSION['name'] = $row['name'];
+                echo '<h2 style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; position: absolute;top: 1rem; right: 15rem; text-align: center ; text-decoration: underline">Bem vindo(a), em nosso site ' . htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') . '!</h1>';
+            } else {
+                echo '<a href="./views/login.php"><input type="button" value="Login"></a>';
+            }
+            ?>
         </div>
     </header>
     <aside>
@@ -70,8 +84,8 @@ if (isset($_GET['anunciar'])) {
     </aside>
     <main>
         <div class="container-main">
-            <span style="font-size: 20px; font-weight: bold; color: rebeccapurple; text-decoration: underline; position: relative; top: 100px; left: 80px">
-                Mais recentes
+            <span style="font-size: 20px; font-weight: bold; color: rebeccapurple; text-decoration: none; position: relative; top: 100px; left: 80px">
+                Adicionar **AQUI**
                 <hr style="position: fixed; left: 70px; border: 1px solid rebeccapurple; width: 25vw;" />
             </span>
         </div>
@@ -105,7 +119,7 @@ if (isset($_GET['anunciar'])) {
             ?>
         </div>
 
-        <div id="meuModal" class="modal" style="display: none; width: 100%; height: 100%; background-color: rgba(128, 128, 128, 0.5); position: fixed; top: 0; z-index: 1">
+        <div id="meuModal" class="container-modal" style="display: none; width: 100%; height: 100%; background-color: rgba(128, 128, 128, 0.5); position: fixed; top: 0; z-index: 1">
             <div class="modal-conteudo" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 25rem; padding: 40px ; box-sizing: border-box; border-radius: 5px; box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6); background-color: white; color: rebeccapurple;">
                 <span class="fechar" style="position: absolute; top: 10px; right: 10px; font-size: 25px; cursor: pointer">&times;</span>
                 <h1 style="text-align: center;">Anuncio</h1>
@@ -120,6 +134,44 @@ if (isset($_GET['anunciar'])) {
                     <input type="file" id="image" name="image[]" accept="image/*" multiple required><br><br>
                     <input type="submit" value="Enviar">
                 </form>
+
+            <?php
+
+            if (isset($_POST['title']) && isset($_POST['price']) && isset($_POST['description'])) {
+                $title = $_POST['title'];
+                $price = $_POST['price'];
+                $description = $_POST['description'];
+                $image = file_get_contents($_FILES['image']['tmp_name']);
+                $image = base64_encode($image);
+                $sql = "INSERT INTO posts (`title`, `price`, `description`, `image`) VALUES (?, ?, ?, '$_GET{`password`}',?)";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("ssss", $title, $price, $description, $image);
+                $stmt->execute();
+                $stmt->close();
+                $con->close();
+                echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var modal = document.getElementById("meuModal");
+                    var span = document.getElementsByClassName("fechar")[0];
+
+                    modal.style.display = "block";
+
+                    span.onclick = function() {
+                        modal.style.display = "none";
+                        window.location.href = "index.php";
+                    };
+
+                    window.onclick = function(event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    };
+                });
+            </script>';
+            }
+            
+            ?>
+                
 
             </div>
         </div>

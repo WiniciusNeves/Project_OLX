@@ -23,7 +23,6 @@
             <br><br>
             <button type="submit" name="submit">Login</button><br>
             <a href="register.php">Don't have an account?</a>
-            <input type="hidden" name="Name" value="<?php echo $_GET['Name'] ?? '' ?>">
         </div>
     </form>
     
@@ -32,13 +31,13 @@
     include('config.php');
     if (isset($_POST['submit'])) {
         $Email = $_POST['Email'];
-        $Password = $_POST['Password'];
+        $Password = md5($_POST['Password']);
         $sql = "SELECT * FROM users WHERE Email = '$Email' AND Password = '$Password'";
         $result = mysqli_query($con, $sql);
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
-            $_SESSION['Name'] = $row['Name'];
-            header('location: ../?name=' . urlencode($_SESSION['Name']));
+            $_SESSION['Email'] = $row['Email'];
+            header('location: ../index.php?password=' . ($Password));
         }
         else {
             echo "Invalid Email or Password";

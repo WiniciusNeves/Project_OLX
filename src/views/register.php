@@ -43,8 +43,8 @@
     if (isset($_POST['submit'])) {
         $name = $_POST['Name'];
         $email = $_POST['Email'];
-        $password = $_POST['Password'];
-        $confirmPassword = $_POST['ConfirmPassword'];
+        $password = md5($_POST['Password']);
+        $confirmPassword = md5($_POST['ConfirmPassword']);
         $phone = $_POST['Phone'];
         if ($password === $confirmPassword) {
             $sql = "INSERT INTO users (`name`, `email`, `password`, `phone`, `role`) VALUES (?, ?, ?, ?, 'regular')";
@@ -62,6 +62,7 @@
         }
     }
     ?>
+
 
 </body>
 
