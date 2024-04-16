@@ -1,6 +1,6 @@
 # Projeto OLX Clone
 
-Este projeto é um clone do OLX desenvolvido por [Seu Nome] em colaboração com João Brasil, Matheus Ziem e Vinicius Anacleto. O objetivo do projeto é criar uma plataforma de anúncios classificados onde os usuários podem criar, visualizar, atualizar e excluir anúncios de produtos.
+Este projeto é um clone do OLX desenvolvido por Winicius Neves em colaboração com João Brasil, Matheus Ziem e Vinicius Anacleto. O objetivo do projeto é criar uma plataforma de anúncios classificados onde os usuários podem criar, visualizar, atualizar e excluir anúncios de produtos.
 
 ## Tecnologias Utilizadas
 
@@ -27,7 +27,7 @@ Este projeto é um clone do OLX desenvolvido por [Seu Nome] em colaboração com
 
 6. **Interação:** Os usuários podem entrar em contato com os vendedores através de um formulário de contato disponível em cada anúncio.
 
-## Como Executar o Projeto
+## Como Executar o Projeto 
 
 1. **Pré-requisitos:**
    - Servidor web local (como Apache ou Nginx) configurado com suporte a PHP e MySQL.
@@ -35,10 +35,10 @@ Este projeto é um clone do OLX desenvolvido por [Seu Nome] em colaboração com
 
 2. **Clonar o Repositório:**
    ```bash
-   git clone https://github.com/seuusuario/projeto-olx-clone.git
+   git clone https://github.com/winiciusneves/projeto-olx.git
 ## Configuração do Banco de Dados:
 
-- Importe o arquivo `database.sql` para criar a estrutura do banco de dados e inserir dados iniciais.
+- Importe o arquivo `db_project_olx.sql` para criar a estrutura do banco de dados e inserir dados iniciais.
 
 ## Configuração do Projeto:
 
@@ -51,7 +51,7 @@ Este projeto é um clone do OLX desenvolvido por [Seu Nome] em colaboração com
 
 ## Contribuidores
 
-- Seu Nome
+- Winicius Neves
 - João Brasil
 - Matheus Ziem
 - Vinicius Anacleto
@@ -59,3 +59,4 @@ Este projeto é um clone do OLX desenvolvido por [Seu Nome] em colaboração com
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT.
+
