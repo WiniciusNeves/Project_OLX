@@ -29,7 +29,7 @@ if (isset($_GET['config'])) {
     $configmodel = '<script>
         document.addEventListener("DOMContentLoaded", function() {
             var modal1 = document.getElementById("config-Modal");
-            var span1 = document.getElementsByClassName("fechar")[0];
+            var span1 = document.getElementsByClassName("fechar2")[0];
 
             modal1.style.display = "flex";
 
@@ -51,7 +51,6 @@ if (isset($_GET['config'])) {
 ?>
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -66,7 +65,7 @@ if (isset($_GET['config'])) {
 <body>
     <header>
         <div class="container-header">
-            <img src="./public/images/logo.jpeg" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;">
+            <a href="index.php"><img src="./public/images/logo.jpeg" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;"></a>
 
             <?php
             $password = (@$_GET['password']);
@@ -91,26 +90,28 @@ if (isset($_GET['config'])) {
     </header>
     <aside>
         <div class="container-aside">
-            <div class="categories">
-                <div class="box" id="box1">
-                    <a href="#"><img src="./public/images/1.png" width="50" height="50" alt="" style="margin-left: 8px;"></a>
+            <div class="categories"">
+                <div class=" box" id="box1">
+                <a href="./filter/tec.php" style="text-decoration: none; "><img src="./public/images/1.png" width="50" height="50" alt="" style="margin-left: 8px;">
                     <ul style="list-style-type: none; padding: 0; margin: 0">
                         <li>tecnologia</li>
                     </ul>
-                </div>
+                </a>
+            </div>
 
-                <div class="box" id="box2">
-                    <a href="#"><img src="./public/images/2.png" width="50" height="50" alt="" style="margin-left: 10px;"></a>
+            <div class="box" id="box2">
+                <a href="./filter/dec.php" style="text-decoration: none; "><img src="./public/images/2.png" width="50" height="50" alt="" style="margin-left: 10px;">
                     <ul style="list-style-type: none; padding: 0; margin: 0">
                         <li>decoração</li>
                     </ul>
-                </div>
-                <div class="box" id="box3">
-                    <a href="#"><img src="./public/images/3.png" width="50" height="50" alt=""></a>
+                </a>
+            </div>
+            <div class="box" id="box3">
+                <a href="./filter/car.php" style="text-decoration: none;"><img src="./public/images/3.png" width="50" height="50" alt="">
                     <ul style="list-style-type: none; padding: 0; margin: 0">
                         <li>Veiculos</li>
                     </ul>
-                </div>
+                </a>
             </div>
         </div>
     </aside>
@@ -290,7 +291,7 @@ if (isset($_GET['config'])) {
 
         <div id="config-Modal" class="container-modal" style="display: none; width: 100%; height: 100%; background-color: rgba(128, 128, 128, 0.5); position: fixed; top: 0;">
             <div class="modal-conteudo" style="flex: 1; padding: 40px; box-sizing: border-box; border-radius: 5px; background-color: white; color: rebeccapurple; width: 80rem; position: fixed; top: 100px; left: 50%; transform: translateX(-50%); ">
-                <span class="fechar" style="position: absolute; top: 10px; right: 10px; font-size: 25px; cursor: pointer">&times;</span>
+                <span class="fechar2" style="position: absolute; top: 10px; left: 20px; font-size: 25px; cursor: pointer">&times;</span>
                 <h1 style="text-align: left;">Configuração de conta</h1>
                 <form action="#" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column ;width: 30rem ;margin-left:25px ">
                     <label for="name">Nome:</label>
@@ -338,7 +339,7 @@ if (isset($_GET['config'])) {
                             </select>
 
                             <input type="hidden" name="id" value="' . $row['id'] . '">
-                            <input type="submit" name="alterar-anuncio" value="Alterar dados" style="margin-top: 15px;">Alterar dados</input>
+                            <input type="submit" name="alterar-anuncio" value="Alterar dados" style="margin-top: 15px;"></input>
                         </form>
                             ';
                             }
@@ -366,15 +367,17 @@ if (isset($_GET['config'])) {
                     ?>
                 </div>
 
-                <?php echo $configmodel; ?>
+
 
             </div>
-            <footer style="position: fixed; bottom: 0; width: 100vw; height: 30px; background-color: black; color: white; font-size: 8px; text-align: center; border-radius: 0px 0px 10px 10px">
-                <h1>Direitos Reservados - 2024 por || Winicius Neves || João Brasil || Vinicius Anacleto || Matheus Ziem ||</h1>
-            </footer>
-
-            <?php echo $modalScript; ?>
+        </div>
     </main>
+    <footer style="position: fixed; bottom: 0; width: 100vw; height: 30px; background-color: black; color: white; font-size: 8px; text-align: center; border-radius: 0px 0px 10px 10px">
+        <h1>Direitos Reservados - 2024 por || Winicius Neves || João Brasil || Vinicius Anacleto || Matheus Ziem ||</h1>
+    </footer>
+    <?php echo $configmodel; ?>
+    <?php echo $modalScript; ?>
+
 
 </body>
 
