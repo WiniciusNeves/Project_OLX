@@ -33,7 +33,7 @@
                 $_SESSION['name'] = $row['name'];
                 echo '<h2 style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; position: fixed;top: 1rem; right: 15rem; text-align: center ; font-weight: bold"><a href="?password=' . htmlspecialchars($_GET['password'], ENT_QUOTES, 'UTF-8'), '&config" ">Bem vindo(a), em nosso site ' . htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') . '!</a></h2>';
             } else {
-                echo '<a href="./views/login.php"><input type="button" value="Login"></a>';
+                echo '<a href="../views/login.php"><input type="button" value="Login"></a>';
             }
             ?>
         </div>

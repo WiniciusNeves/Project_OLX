@@ -279,11 +279,11 @@ if (isset($_GET['config'])) {
                 $result = $stmt->get_result();
                 $row = $result->fetch_assoc();
 
-                $id = $row['id'];
-                $title = $row['title'];
-                $price = $row['price'];
-                $description = $row['description'];
-                $category = $row['category'];
+                $id = @$row['id'];
+                $title = @$row['title'];
+                $price = @$row['price'];
+                $description = @$row['description'];
+                $category = @$row['category'];
             }
         }
 
@@ -340,11 +340,25 @@ if (isset($_GET['config'])) {
 
                             <input type="hidden" name="id" value="' . $row['id'] . '">
                             <input type="submit" name="alterar-anuncio" value="Alterar dados" style="margin-top: 15px;"></input>
+                            <input type="submit" name="deletar-anuncio" value="Deletar anúncio" style="margin-top: 15px;"></input>
                         </form>
                             ';
                             }
                         } else {
                             echo "<p>Você ainda não tem anúncios.</p>";
+                        }
+                    }
+                    if (isset($_POST['deletar-anuncio'])) {
+                        $id = $_POST['id'];
+                        $sql = "DELETE FROM posts WHERE `id` = ?";
+                        $stmt = $con->prepare($sql);
+                        $stmt->bind_param("i", $id);
+                        $stmt->execute();
+                        if ($stmt->affected_rows > 0) {
+                            echo "<script>alert('Anúncio deletado com sucesso!')
+                            window.location.href = 'index.php?password=" . $password . "';</script>";
+                        } else {
+                            echo "Erro ao deletar anúncio.";
                         }
                     }
                     if (isset($_POST['alterar-anuncio'])) {
