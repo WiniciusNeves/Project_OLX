@@ -312,10 +312,24 @@ if (isset($_GET['config'])) {
                     <?php
 
                     if (isset($users_id)) {
-
-                        $sql = "SELECT * FROM posts WHERE `users_id` = ?";
+                        if (isset($_GET['password'])) {
+                        $password = $_GET['password'];
+                        $sql = "SELECT * FROM users WHERE `password` = ?";
                         $stmt = $con->prepare($sql);
-                        $stmt->bind_param("s", $users_id);
+                        $stmt->bind_param("s", $password);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        $row = $result->fetch_assoc();
+                        $users_role = $row['role'];
+                        if($users_role == 'admin'){
+                            $sql = "SELECT * FROM posts";
+                        }else{
+                            $sql = "SELECT * FROM posts WHERE `users_id` = ?";
+                        }
+                        $stmt = $con->prepare($sql);
+                        if($users_role != 'admin'){
+                            $stmt->bind_param("s", $users_id);
+                        }
                         $stmt->execute();
                         $result = $stmt->get_result();
 
@@ -347,6 +361,7 @@ if (isset($_GET['config'])) {
                             echo "<p>Você ainda não tem anúncios.</p>";
                         }
                     }
+                }
                     if (isset($_POST['alterar-anuncio'])) {
                         $id = $_POST['id'];
                         $title = $_POST['title'];
