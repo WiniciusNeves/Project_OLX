@@ -22,7 +22,7 @@ CREATE TABLE posts (
     `description` VARCHAR(255),
     `price` VARCHAR(255),
     `category` VARCHAR(255),
-    `image` VARCHAR(255),
+    `image` Longblob(255),
     `users_id` INT,
     FOREIGN KEY (users_id) REFERENCES users(id)
 );

@@ -11,7 +11,7 @@ if (isset($_GET['anunciar'])) {
 
             span.onclick = function() {
                 modal.style.display = "none";
-                window.location.href = "index.php?password=' . htmlspecialchars($_GET['password']) . '";
+                window.location.href = "index.php?id=' . htmlspecialchars($_GET['id']) . '";
             };
 
             window.onclick = function(event) {
@@ -35,7 +35,7 @@ if (isset($_GET['config'])) {
 
             span1.onclick = function() {
                 modal1.style.display = "none";
-                window.location.href = "index.php?password=' . htmlspecialchars($_GET['password']) . '";
+                window.location.href = "index.php?id=' . htmlspecialchars($_GET['id']) . '";
             };
 
             window.onclick = function(event) {
@@ -68,18 +68,18 @@ if (isset($_GET['config'])) {
             <a href="index.php"><img src="./public/images/logo.jpeg" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;"></a>
 
             <?php
-            $password = (@$_GET['password']);
-            $sql = "SELECT * FROM users WHERE `password` = ?";
+            $id = (@$_GET['id']);
+            $sql = "SELECT * FROM users WHERE `id` = ?";
 
             $stmt = $con->prepare($sql);
-            $stmt->bind_param("s", $password);
+            $stmt->bind_param("s", $id);
             $stmt->execute();
             $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $_SESSION['name'] = $row['name'];
-                echo '<h2 style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; position: fixed;top: 1rem; right: 15rem; text-align: center ; font-weight: bold"><a href="?password=' . htmlspecialchars($_GET['password'], ENT_QUOTES, 'UTF-8'), '&config" ">Bem vindo(a), em nosso site ' . htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') . '!</a></h2>';
+                echo '<h2 style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; position: fixed;top: 1rem; right: 15rem; text-align: center ; font-weight: bold"><a href="?id=' . htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8') . '&config" ">Bem vindo(a), em nosso site ' . htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') . '!</a></h2>';
             } else {
                 echo '<a href="./views/login.php"><input type="button" value="Login"></a>';
             }
@@ -121,7 +121,7 @@ if (isset($_GET['config'])) {
             <span style="font-size: 20px; font-weight: bold; color: rebeccapurple; text-decoration: none; position: relative; top: 100px; left: 80px">
                 <?php
                 if (isset($_SESSION['name'])) {
-                    echo '<a href="?password=' . htmlspecialchars($_GET['password'], ENT_QUOTES, 'UTF-8') . '&anunciar"><input type="button" value="Adicionar anuncio"></a>';
+                    echo '<a href="?id=' . htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8') . '&anunciar"><input type="button" value="Adicionar anuncio"></a>';
                 } elseif (!isset($_SESSION['name']) && !isset($_GET['anunciar'])) {
                     echo '<h2 style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; position: absolute;top: 1rem; right: 15rem; text-align: center ; font-weight: bold">Aqui está faltando anúncio, venha e faça o seu!</h2>';
                 }
@@ -197,11 +197,11 @@ if (isset($_GET['config'])) {
             $category = $_POST['category'];
             $image = $_FILES['image'];
 
-            $password = (@$_GET['password']);
+            $id = (@$_GET['id']);
 
-            $sql = "SELECT * FROM users WHERE `password` = ?";
+            $sql = "SELECT * FROM users WHERE `id` = ?";
             $stmt = $con->prepare($sql);
-            $stmt->bind_param("s", $password);
+            $stmt->bind_param("s", $id);
             $stmt->execute();
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
@@ -227,11 +227,11 @@ if (isset($_GET['config'])) {
         </div>
 
         <?php
-        if (isset($_GET['password'])) {
-            $password = $_GET['password'];
-            $sql = "SELECT * FROM users WHERE `password` = ?";
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $sql = "SELECT * FROM users WHERE `id` = ?";
             $stmt = $con->prepare($sql);
-            $stmt->bind_param("s", $password);
+            $stmt->bind_param("s", $id);
             $stmt->execute();
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
@@ -247,9 +247,9 @@ if (isset($_GET['config'])) {
             $password = md5($_POST['password']);
             $confirmPassword = md5($_POST['confirmPassword']);
             if ($password === $confirmPassword) {
-                $sql = "UPDATE users SET `name` = ?, `email` = ?, `phone` = ? WHERE `password` = ?";
+                $sql = "UPDATE users SET `name` = ?, `email` = ?, `phone` = ? WHERE `id` = ?";
                 $stmt = $con->prepare($sql);
-                $stmt->bind_param("ssss", $name, $email, $phone, $password);
+                $stmt->bind_param("sssi", $name, $email, $phone, $id);
                 $stmt->execute();
                 if ($stmt->affected_rows > 0) {
                     echo "<script>alert('Informações atualizadas com sucesso!')</script>";
@@ -261,24 +261,22 @@ if (isset($_GET['config'])) {
             }
         }
 
-        if (isset($_GET['password'])) {
-            $password = $_GET['password'];
-            $sql = "SELECT * FROM users WHERE `password` = ?";
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $sql = "SELECT * FROM users WHERE `id` = ?";
             $stmt = $con->prepare($sql);
-            $stmt->bind_param("s", $password);
+            $stmt->bind_param("s", $id);
             $stmt->execute();
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
             if (isset($row['id'])) {
-                $users_id = $row['id'];
-
                 $sql = "SELECT * FROM posts WHERE `users_id` = ?";
                 $stmt = $con->prepare($sql);
                 $stmt->bind_param("s", $users_id);
                 $stmt->execute();
                 $result = $stmt->get_result();
                 $row = $result->fetch_assoc();
-
+    
                 $id = @$row['id'];
                 $title = @$row['title'];
                 $price = @$row['price'];
@@ -286,9 +284,9 @@ if (isset($_GET['config'])) {
                 $category = @$row['category'];
             }
         }
-
+    
         ?>
-
+    
         <div id="config-Modal" class="container-modal" style="display: none; width: 100%; height: 100%; background-color: rgba(128, 128, 128, 0.5); position: fixed; top: 0;">
             <div class="modal-conteudo" style="flex: 1; padding: 40px; box-sizing: border-box; border-radius: 5px; background-color: white; color: rebeccapurple; width: 80rem; position: fixed; top: 100px; left: 50%; transform: translateX(-50%); ">
                 <span class="fechar2" style="position: absolute; top: 10px; left: 20px; font-size: 25px; cursor: pointer">&times;</span>
@@ -310,40 +308,40 @@ if (isset($_GET['config'])) {
                 <div class="modal-anuncios" style="display: flex; flex-direction: column; width: 38rem; position: fixed; top: 0rem; right: 0rem; overflow: auto; max-height: 90%; padding: 40px; box-sizing: border-box; border-radius: 5px; background-color: white; color: rebeccapurple;">
                     <h1>Seus anúncios</h1>
                     <?php
-
+    
                     if (isset($users_id)) {
-                        if (isset($_GET['password'])) {
-                        $password = $_GET['password'];
-                        $sql = "SELECT * FROM users WHERE `password` = ?";
-                        $stmt = $con->prepare($sql);
-                        $stmt->bind_param("s", $password);
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-                        $row = $result->fetch_assoc();
-                        $users_role = $row['role'];
-                        if($users_role == 'admin'){
-                            $sql = "SELECT * FROM posts";
-                        }else{
-                            $sql = "SELECT * FROM posts WHERE `users_id` = ?";
-                        }
-                        $stmt = $con->prepare($sql);
-                        if($users_role != 'admin'){
-                            $stmt->bind_param("s", $users_id);
-                        }
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-
-                        if ($result->num_rows > 0) {
-
-                            while ($row = $result->fetch_assoc()) {
-                                echo '<form action="#" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column ;width: 30rem ;margin-left:25px ">
+                        if (isset($_GET['id'])) {
+                            $id = $_GET['id'];
+                            $sql = "SELECT * FROM users WHERE `id` = ?";
+                            $stmt = $con->prepare($sql);
+                            $stmt->bind_param("s", $id);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            $row = $result->fetch_assoc();
+                            $users_role = $row['role'];
+                            if ($users_role == 'admin') {
+                                $sql = "SELECT * FROM posts";
+                            } else {
+                                $sql = "SELECT * FROM posts WHERE `users_id` = ?";
+                            }
+                            $stmt = $con->prepare($sql);
+                            if ($users_role != 'admin') {
+                                $stmt->bind_param("s", $users_id);
+                            }
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+    
+                            if ($result->num_rows > 0) {
+    
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<form action="#" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column ;width: 30rem ;margin-left:25px ">
                             <label for="title" style="margin-top: 15px;">Título:</label>
                             <input type="text" id="title" name="title" value="' . $row['title'] . '" required>
                             <label for="price">Preço:</label>
                             <input type="text" id="price" name="price" value="' . $row['price'] . '" required>
                             <label for="description">Descrição:</label>
                             <input type="text" id="description" name="description" value="' . $row['description'] . '">
-
+    
                             <label for="category" style="margin-top: 15px;">Categoria:</label>
                             <select name="category" id="category" style="width: 15rem; height: 2rem; margin-top: 10px; border-radius: 5px; border: 1px solid #ccc;">
                                 <option value="">Selecione aqui</option>
@@ -351,18 +349,18 @@ if (isset($_GET['config'])) {
                                 <option value="Tecnologia" ' . ($row['category'] === 'Tecnologia' ? 'selected' : '') . '>Tecnologia</option>
                                 <option value="Carros" ' . ($row['category'] === 'Carros' ? 'selected' : '') . '>Carros</option>
                             </select>
-
+    
                             <input type="hidden" name="id" value="' . $row['id'] . '">
                             <input type="submit" name="alterar-anuncio" value="Alterar dados" style="margin-top: 15px;"></input>
                             <input type="submit" name="deletar-anuncio" value="Deletar anúncio" style="margin-top: 15px;"></input>
                         </form>
                             ';
+                                }
+                            } else {
+                                echo "<p>Você ainda não tem anúncios.</p>";
                             }
-                        } else {
-                            echo "<p>Você ainda não tem anúncios.</p>";
                         }
                     }
-                }
                     if (isset($_POST['alterar-anuncio'])) {
                         $id = $_POST['id'];
                         $title = $_POST['title'];
@@ -375,16 +373,16 @@ if (isset($_GET['config'])) {
                         $stmt->execute();
                         if ($stmt->affected_rows > 0) {
                             echo "<script>alert('Informações atualizadas com sucesso!')
-                            window.location.href = 'index.php?password=" . $password . "';</script>";
+                            window.location.href = 'index.php?id=" . $id . "';</script>";
                         } else {
                             echo "Erro ao atualizar informações.";
                         }
                     }
                     ?>
                 </div>
-
-
-
+    
+    
+    
             </div>
         </div>
     </main>
@@ -393,8 +391,4 @@ if (isset($_GET['config'])) {
     </footer>
     <?php echo $configmodel; ?>
     <?php echo $modalScript; ?>
-
-
-</body>
-
-</html>
+    

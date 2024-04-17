@@ -26,24 +26,37 @@
         </div>
     </form>
     
+   <?php
+   include('config.php');
+   session_start();
+   
+   if (isset($_POST['submit'])) {
+    $Email = $_POST['Email'];
+    $Password = md5($_POST['Password']);
+    
+    $sql = "SELECT id FROM users WHERE Email = ? AND Password = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("ss", $Email, $Password);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+      
+        $row = $result->fetch_assoc();
+        $id = $row['id'];
 
-    <?php
-    include('config.php');
-    if (isset($_POST['submit'])) {
-        $Email = $_POST['Email'];
-        $Password = md5($_POST['Password']);
-        $sql = "SELECT * FROM users WHERE Email = '$Email' AND Password = '$Password'";
-        $result = mysqli_query($con, $sql);
-        if (mysqli_num_rows($result) > 0) {
-            $row = mysqli_fetch_assoc($result);
-            $_SESSION['Email'] = $row['Email'];
-            header('location: ../index.php?password=' . ($Password));
-        }
-        else {
-            echo "Invalid Email or Password";
-        }
+        $_SESSION['Email'] = $Email;
+        $_SESSION['id'] = $id;
+
+        header('location: ../index.php?id=' . $id);
+        exit();
+    } else {
+ 
+        echo "Invalid Email or Password";
     }
-    ?>
+}
+?>
+   
 </body>
 
 </html>
