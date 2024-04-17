@@ -55,7 +55,7 @@ input[type=button]:hover {
     transition: border-radius 0.25s ease-in-out, transform 0.25s ease-in-out;
     position: relative;
     top: 5rem;
-    left: 45rem;
+    left: 35%;
 }
 
 .box:hover {
