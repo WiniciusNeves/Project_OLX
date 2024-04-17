@@ -362,23 +362,7 @@ if (isset($_GET['config'])) {
                             echo "<p>Você ainda não tem anúncios.</p>";
                         }
                     }
-<<<<<<< HEAD
                 }
-=======
-                    if (isset($_POST['deletar-anuncio'])) {
-                        $id = $_POST['id'];
-                        $sql = "DELETE FROM posts WHERE `id` = ?";
-                        $stmt = $con->prepare($sql);
-                        $stmt->bind_param("i", $id);
-                        $stmt->execute();
-                        if ($stmt->affected_rows > 0) {
-                            echo "<script>alert('Anúncio deletado com sucesso!')
-                            window.location.href = 'index.php?password=" . $password . "';</script>";
-                        } else {
-                            echo "Erro ao deletar anúncio.";
-                        }
-                    }
->>>>>>> 0983b630c36723976dd1e737b12ec54d0bd59f35
                     if (isset($_POST['alterar-anuncio'])) {
                         $id = $_POST['id'];
                         $title = $_POST['title'];
