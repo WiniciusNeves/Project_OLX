@@ -306,42 +306,42 @@ if (isset($_GET['config'])) {
                 </form>
                 <div style="border-left: 2px solid black; height: 100%; position: absolute; left: 50%; top: 0; transform: translateX(-50%)"></div>
                 <div class="modal-anuncios" style="display: flex; flex-direction: column; width: 38rem; position: fixed; top: 0rem; right: 0rem; overflow: auto; max-height: 90%; padding: 40px; box-sizing: border-box; border-radius: 5px; background-color: white; color: rebeccapurple;">
-                    <h1>Seus anúncios</h1>
+                   <h1>Seus anúncios</h1>
                     <?php
-    
+
                     if (isset($users_id)) {
-                        if (isset($_GET['id'])) {
-                            $id = $_GET['id'];
-                            $sql = "SELECT * FROM users WHERE `id` = ?";
-                            $stmt = $con->prepare($sql);
-                            $stmt->bind_param("s", $id);
-                            $stmt->execute();
-                            $result = $stmt->get_result();
-                            $row = $result->fetch_assoc();
-                            $users_role = $row['role'];
-                            if ($users_role == 'admin') {
-                                $sql = "SELECT * FROM posts";
-                            } else {
-                                $sql = "SELECT * FROM posts WHERE `users_id` = ?";
-                            }
-                            $stmt = $con->prepare($sql);
-                            if ($users_role != 'admin') {
-                                $stmt->bind_param("s", $users_id);
-                            }
-                            $stmt->execute();
-                            $result = $stmt->get_result();
-    
-                            if ($result->num_rows > 0) {
-    
-                                while ($row = $result->fetch_assoc()) {
-                                    echo '<form action="#" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column ;width: 30rem ;margin-left:25px ">
+                        if (isset($_GET['password'])) {
+                        $password = $_GET['password'];
+                        $sql = "SELECT * FROM users WHERE `password` = ?";
+                        $stmt = $con->prepare($sql);
+                        $stmt->bind_param("s", $password);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        $row = $result->fetch_assoc();
+                        $users_role = $row['role'];
+                        if($users_role == 'admin'){
+                            $sql = "SELECT * FROM posts";
+                        }else{
+                            $sql = "SELECT * FROM posts WHERE `users_id` = ?";
+                        }
+                        $stmt = $con->prepare($sql);
+                        if($users_role != 'admin'){
+                            $stmt->bind_param("s", $users_id);
+                        }
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if ($result->num_rows > 0) {
+
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<form action="#" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column ;width: 30rem ;margin-left:25px ">
                             <label for="title" style="margin-top: 15px;">Título:</label>
                             <input type="text" id="title" name="title" value="' . $row['title'] . '" required>
                             <label for="price">Preço:</label>
                             <input type="text" id="price" name="price" value="' . $row['price'] . '" required>
                             <label for="description">Descrição:</label>
                             <input type="text" id="description" name="description" value="' . $row['description'] . '">
-    
+
                             <label for="category" style="margin-top: 15px;">Categoria:</label>
                             <select name="category" id="category" style="width: 15rem; height: 2rem; margin-top: 10px; border-radius: 5px; border: 1px solid #ccc;">
                                 <option value="">Selecione aqui</option>
@@ -349,18 +349,18 @@ if (isset($_GET['config'])) {
                                 <option value="Tecnologia" ' . ($row['category'] === 'Tecnologia' ? 'selected' : '') . '>Tecnologia</option>
                                 <option value="Carros" ' . ($row['category'] === 'Carros' ? 'selected' : '') . '>Carros</option>
                             </select>
-    
+
                             <input type="hidden" name="id" value="' . $row['id'] . '">
                             <input type="submit" name="alterar-anuncio" value="Alterar dados" style="margin-top: 15px;"></input>
                             <input type="submit" name="deletar-anuncio" value="Deletar anúncio" style="margin-top: 15px;"></input>
                         </form>
                             ';
-                                }
-                            } else {
-                                echo "<p>Você ainda não tem anúncios.</p>";
                             }
+                        } else {
+                            echo "<p>Você ainda não tem anúncios.</p>";
                         }
                     }
+                }
                     if (isset($_POST['alterar-anuncio'])) {
                         $id = $_POST['id'];
                         $title = $_POST['title'];
@@ -373,16 +373,27 @@ if (isset($_GET['config'])) {
                         $stmt->execute();
                         if ($stmt->affected_rows > 0) {
                             echo "<script>alert('Informações atualizadas com sucesso!')
-                            window.location.href = 'index.php?id=" . $id . "';</script>";
+                            window.location.href = 'index.php?password=" . $password . "';</script>";
                         } else {
                             echo "Erro ao atualizar informações.";
                         }
                     }
+
+                    if (isset($_POST['deletar-anuncio'])) {
+                        $id = $_POST['id'];
+                        $sql = "DELETE FROM posts WHERE `id` = ?";
+                        $stmt = $con->prepare($sql);
+                        $stmt->bind_param("i", $id);
+                        $stmt->execute();
+                        if ($stmt->affected_rows > 0) {
+                            echo "<script>alert('Anúncio excluído com sucesso!')
+                            window.location.href = 'index.php?password=" . $password . "';</script>";
+                        } else {
+                            echo "Erro ao excluir anúncio.";
+                        }
+                    }
                     ?>
-                </div>
-    
-    
-    
+                </div>    
             </div>
         </div>
     </main>
