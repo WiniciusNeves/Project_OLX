@@ -20,20 +20,20 @@
 
             <?php
             include('../views/config.php');
-            $password = (@$_GET['password']);
-            $sql = "SELECT * FROM users WHERE `password` = ?";
+            $id = (@$_GET['id']);
+            $sql = "SELECT * FROM users WHERE `id` = ?";
 
             $stmt = $con->prepare($sql);
-            $stmt->bind_param("s", $password);
+            $stmt->bind_param("s", $id);
             $stmt->execute();
             $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $_SESSION['name'] = $row['name'];
-                echo '<h2 style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; position: fixed;top: 1rem; right: 15rem; text-align: center ; font-weight: bold"><a href="?password=' . htmlspecialchars($_GET['password'], ENT_QUOTES, 'UTF-8'), '&config" ">Bem vindo(a), em nosso site ' . htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') . '!</a></h2>';
+                echo '<h2 style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; position: fixed;top: 1rem; right: 15rem; text-align: center ; font-weight: bold"><a href="?id=' . htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8') . '&config" ">Bem vindo(a), em nosso site ' . htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') . '!</a></h2>';
             } else {
-                echo '<a href="../views/login.php"><input type="button" value="Login"></a>';
+                echo '<a href="./views/login.php"><input type="button" value="Login"></a>';
             }
             ?>
         </div>
@@ -42,7 +42,7 @@
         <div class="container-aside">
             <div class="categories"">
                 <div class=" box" id="box1">
-                <a href="tec.php" style="text-decoration: none; "><img src="../public/images/1.png" width="50" height="50" alt="" style="margin-left: 8px;">
+                <a href="tec.php?id=<?php echo $id ?> " style="text-decoration: none; "><img src="../public/images/1.png" width="50" height="50" alt="" style="margin-left: 8px;">
                     <ul style="list-style-type: none; padding: 0; margin: 0">
                         <li>tecnologia</li>
                     </ul>
@@ -50,7 +50,7 @@
             </div>
 
             <div class="box" id="box2">
-                <a href="dec.php" style="text-decoration: none; "><img src="../public/images/2.png" width="50" height="50" alt="" style="margin-left: 10px;">
+                <a href="dec.php?id=<?php echo $id ?> " style="text-decoration: none; "><img src="../public/images/2.png" width="50" height="50" alt="" style="margin-left: 10px;">
                     <ul style="list-style-type: none; padding: 0; margin: 0">
                         <li>decoração</li>
                     </ul>
