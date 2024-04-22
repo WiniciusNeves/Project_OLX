@@ -38,9 +38,9 @@ input[type=button] {
 }
 
 input[type=button]:hover {
-    background: #ffb515;
+    background: white;
     color: #67009b;
-    border: 1px solid #ffb515;
+    border: 1px solid linear-gradient(to right, rebeccapurple, rgb(0, 157, 255));
 }
 
 .box {

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="../public/css/login.css">
+    <link rel="shortcut icon" href="https://th.bing.com/th/id/OIP.rGPKSyDiXueEAV-7qQoPkwHaHa?rs=1&pid=ImgDetMain" type="image/x-icon">
 </head>
 
 <body>

@@ -59,6 +59,7 @@ if (isset($_GET['config'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OLX</title>
     <link rel="stylesheet" href="./public/css/style.css">
+    <link rel="shortcut icon" href="https://th.bing.com/th/id/OIP.rGPKSyDiXueEAV-7qQoPkwHaHa?rs=1&pid=ImgDetMain" type="image/x-icon">
 </head>
 
 
@@ -69,6 +70,7 @@ if (isset($_GET['config'])) {
 
             <?php
             $id = (@$_GET['id']);
+
             $sql = "SELECT * FROM users WHERE `id` = ?";
 
             $stmt = $con->prepare($sql);
