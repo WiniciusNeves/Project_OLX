@@ -81,7 +81,7 @@ if (isset($_GET['config'])) {
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $_SESSION['name'] = $row['name'];
-                echo '<h2 style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; position: fixed;top: 1rem; right: 15rem; text-align: center ; font-weight: bold"><a href="?id=' . htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8') . '&config" ">Bem vindo(a), em nosso site ' . htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') . '!</a></h2>
+                echo '<h2 style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; position: absolute;top: 1rem; right: 8rem; text-align: center ; font-weight: bold"><a href="?id=' . htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8') . '&config" ">Bem vindo(a), em nosso site ' . htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') . '!</a></h2>
                 <a href="index.php"><input type="button" value="exit"></a>';
             } else {
                 echo '<a href="./views/login.php"><input type="button" value="Login"></a>';
