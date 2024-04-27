@@ -1,5 +1,9 @@
 <?php
 include './views/config.php';
+//require('verifica.php')
+?>
+
+<?php
 $modalScript = '';
 if (isset($_GET['anunciar'])) {
     $modalScript = '<script>
