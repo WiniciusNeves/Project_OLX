@@ -82,11 +82,31 @@ if (isset($_GET['config'])) {
             $stmt->execute();
             $result = $stmt->get_result();
 
-            if ($result->num_rows > 0) {
+             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $_SESSION['name'] = $row['name'];
-                echo '<h2 style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; position: absolute;top: 1rem; right: 8rem; text-align: center ; font-weight: bold"><a href="?id=' . htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8') . '&config" ">Bem vindo(a), em nosso site ' . htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') . '!</a></h2>
-                <a href="index.php"><input type="button" value="exit"></a>';
+                echo '<div style="position: absolute; top: 1rem; right: 1rem;">';
+                echo '<button id="btnConfig" style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; font-weight: bold; background: none; border: none; cursor: pointer;">Menu</button>';
+                echo '<ul id="menuConfig" style="display: none; width: 100px; list-style-type: none; padding: 0; margin: 0; position: absolute; top: 2rem; right: 2rem; background-color: rgba(76, 175, 80, 0.7); border: 1px solid rebeccapurple; border-radius: 5px;">
+                        <li style="border-bottom: 1px solid #ccc;"><a href="?id=' . htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8') . '&config" style="display: block; padding: 10px; text-decoration: none; color: white;">Conta</a></li>
+                        <li><a href="?" style="display: block; padding: 10px; text-decoration: none; color: white;">Sair</a></li>
+                    </ul>';
+                echo '</div>';
+                echo '<script>
+                        const btnConfig = document.getElementById("btnConfig");
+                        const menuConfig = document.getElementById("menuConfig");
+                
+                        btnConfig.addEventListener("click", function() {
+                            menuConfig.style.display = (menuConfig.style.display === "none") ? "block" : "none";
+                        });
+                
+                        // Fechar o menu quando clicar fora dele
+                        document.addEventListener("click", function(event) {
+                            if (!menuConfig.contains(event.target) && event.target !== btnConfig) {
+                                menuConfig.style.display = "none";
+                            }
+                        });
+                    </script>';
             } else {
                 echo '<a href="./views/login.php"><input type="button" value="Login"></a>';
             }
@@ -138,9 +158,13 @@ if (isset($_GET['config'])) {
 
         </div>
         <div class="container-posts " id="filtered">
-            <?php
+ <?php
 
-            $sql = "SELECT * FROM posts ORDER BY id DESC";
+            if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
+                $sql = "SELECT * FROM posts ORDER BY id DESC";
+            } else {
+                $sql = "SELECT * FROM posts WHERE situation = 'approved' ORDER BY id DESC";
+            }
             $result = $con->query($sql);
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -164,7 +188,6 @@ if (isset($_GET['config'])) {
                 </div>';
                 }
             }
-
 
             ?>
         </div>
