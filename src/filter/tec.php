@@ -1,5 +1,9 @@
 <?php
 include '../views/config.php';
+//require('verifica.php')
+?>
+
+<?php
 $modalScript = '';
 if (isset($_GET['anunciar'])) {
     $modalScript = '<script>
@@ -11,7 +15,7 @@ if (isset($_GET['anunciar'])) {
 
             span.onclick = function() {
                 modal.style.display = "none";
-                window.location.href = "?id=' . htmlspecialchars($_GET['id']) . '";
+                window.location.href = "index.php?' . htmlspecialchars($_GET['id']) . '";
             };
 
             window.onclick = function(event) {
@@ -23,36 +27,11 @@ if (isset($_GET['anunciar'])) {
     </script>';
 }
 ?>
-<?php
-$configmodel = '';
-if (isset($_GET['config'])) {
-    $configmodel = '<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var modal1 = document.getElementById("config-Modal");
-            var span1 = document.getElementsByClassName("fechar2")[0];
 
-            modal1.style.display = "flex";
-
-            span1.onclick = function() {
-                modal1.style.display = "none";
-                window.location.href = "?id=' . htmlspecialchars($_GET['id']) . '";
-            };
-
-            window.onclick = function(event) {
-                if (event.target == modal1) {
-                    modal1.style.display = "none";
-                }
-            };
-        });
-    </script>';
-} elseif (empty($_GET['config'])) {
-    $configmodel = '';
-}
-?>
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -66,11 +45,10 @@ if (isset($_GET['config'])) {
 <body>
     <header>
         <div class="container-header">
-            <a href="../index.php"><img src="../public/images/logo.jpeg" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;"></a>
+            <a href="index.php"><img src="../public/images/logo.jpeg" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;"></a>
 
             <?php
             $id = (@$_GET['id']);
-
             $sql = "SELECT * FROM users WHERE `id` = ?";
 
             $stmt = $con->prepare($sql);
@@ -81,10 +59,31 @@ if (isset($_GET['config'])) {
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $_SESSION['name'] = $row['name'];
-                echo '<h2 style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; position: absolute;top: 1rem; right: 8rem; text-align: center ; font-weight: bold"><a href="?id=' . htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8') . '&config" ">Bem vindo(a), em nosso site ' . htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') . '!</a></h2>
-                <a href="?"><input type="button" value="exit"></a>';
+                echo '<div style="position: absolute; top: 1rem; right: 1rem;">';
+                echo '<button id="btnConfig" style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; font-weight: bold; background: none; border: none; cursor: pointer;">Menu</button>';
+                echo '<ul id="menuConfig" style="display: none; width: 25rem; list-style-type: none; padding: 0; margin: 0; position:fixed; top: 5rem;height:100%  ; background-color: rgba(76, 175, 80, 0.7); border: 1px solid rebeccapurple; border-radius: 5px;">
+                        <li><a href="../views/profile.php?id=' . $id . '" style="display: block; padding: 10px; text-decoration: none; color: white;border-bottom: 1px solid white;">Configurações</a></li>
+                        <li><a href="../views/ads.php?id=' . $id . '" style="display: block; padding: 10px; text-decoration: none; color: white; border-bottom: 1px solid white;">Anúncios</a></li>
+                        <li><a href="?" style="display: block; padding: 10px; text-decoration: none; color: white; border-bottom: 1px solid white;">Sair</a></li>
+                    </ul>';
+                echo '</div>';
+                echo '<script>
+                        const btnConfig = document.getElementById("btnConfig");
+                        const menuConfig = document.getElementById("menuConfig");
+                
+                        btnConfig.addEventListener("click", function() {
+                            menuConfig.style.display = (menuConfig.style.display === "none") ? "block" : "none";
+                        });
+                
+                        // Fechar o menu quando clicar fora dele
+                        document.addEventListener("click", function(event) {
+                            if (!menuConfig.contains(event.target) && event.target !== btnConfig) {
+                                menuConfig.style.display = "none";
+                            }
+                        });
+                    </script>';
             } else {
-                echo '<a href="../views/login.php"><input type="button" value="Login"></a>';
+                echo '<a href="./views/login.php"><input type="button" value="Login"></a>';
             }
             ?>
         </div>
@@ -95,7 +94,7 @@ if (isset($_GET['config'])) {
         <div class="container-aside">
             <div class="categories"">
                 <div class=" box" id="box1">
-                <a href="#" style="text-decoration: none; "><img src="../public/images/1.png" width="50" height="50" alt="" style="margin-left: 8px;">
+                <a href="../filter/tec.php?id=<?php echo $id ?> " style="text-decoration: none; "><img src="../public/images/1.png" width="50" height="50" alt="" style="margin-left: 8px;">
                     <ul style="list-style-type: none; padding: 0; margin: 0">
                         <li>tecnologia</li>
                     </ul>
@@ -103,14 +102,14 @@ if (isset($_GET['config'])) {
             </div>
 
             <div class="box" id="box2">
-                <a href="dec.php?id=<?php echo $id?>" style="text-decoration: none; "><img src="../public/images/2.png" width="50" height="50" alt="" style="margin-left: 10px;">
+                <a href="../filter/dec.php?id=<?php echo $id ?> " style="text-decoration: none; "><img src="../public/images/2.png" width="50" height="50" alt="" style="margin-left: 10px;">
                     <ul style="list-style-type: none; padding: 0; margin: 0">
                         <li>decoração</li>
                     </ul>
                 </a>
             </div>
             <div class="box" id="box3">
-                <a href="car.php?id=<?php echo $id ?>" style="text-decoration: none;"><img src="../public/images/3.png" width="50" height="50" alt="">
+                <a href="../filter/car.php?id=<?php echo $id ?> " style="text-decoration: none;"><img src="../public/images/3.png" width="50" height="50" alt="">
                     <ul style="list-style-type: none; padding: 0; margin: 0">
                         <li>Veiculos</li>
                     </ul>
@@ -135,32 +134,49 @@ if (isset($_GET['config'])) {
         </div>
         <div class="container-posts " id="filtered">
             <?php
+            if (isset($_GET['id'])) {
+                $id = $_GET['id'];
+                $sql = "SELECT `role` FROM users WHERE id = ?";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("s", $id);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-            $sql = "SELECT * FROM posts WHERE category = 'tecnologia' ORDER BY id DESC";
+                if ($result->num_rows == 1) {
+                    $row = $result->fetch_assoc();
+                    $role = $row['role'];
+                }
+            }
+
+            if (isset($row['role']) && $row['role'] == 'admin') {
+                $sql = "SELECT * FROM posts where category = 'tecnologia' ORDER BY id DESC";
+            } else {
+                $sql = "SELECT * FROM posts WHERE situation = 'Aprovado' AND category = 'tecnologia' ORDER BY id DESC";
+            }
+
             $result = $con->query($sql);
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo '<div class="post" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); width: 300px; height: 500px; margin: 20px; float: left; border-radius: 10px; position: relative; top: 100px; left: 40px ; background-color: white ">
-                    <div class="image" style="border-top-left-radius: 10px; border-top-right-radius: 10px">
-                        <img src="data:image/jpeg;base64,' . base64_encode($row['image']) . '" alt="" width="100%" height="250px">
-                    </div>
-                    <div class="price" style="color: rebeccapurple; font-size: 20px; font-weight: bold; text-align: right; position: relative; top: -20px; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: white; border-top:3px solid #90ee90">
-                    <h2 style="margin: 0 20px 0 10px" font-size: 25px> R$ ' . $row['price'] . '<h2>
-                    </div>
-                    <div class="title" style="text-align: left; position: relative; top: -45px; background-color: white; font-size: 20px; font-weight: bold; color: rebeccapurple">
-                        <h1 style="margin: 0 20px 0 10px; font-size: 20px;">' . $row['title'] . '<h1>
-                    </div>
-                    <div class="category" style="text-align: right; position: relative; top: -73px; background-color: white; font-size: 20px; font-weight: bold;color: rebeccapurple">
-                        <p style="margin: 0 20px 0 10px; font-size: 20px;"> Categoria: ' . $row['category'] . '<p>
-                    </div>
-                    <div class="description" style="text-align: left; position: relative; top: -80px; background-color: white; font-size: 20px; font-weight: bold; width: auto height: auto; color: rebeccapurple ;front-family: sans-serif  ">
-                        <p style="margin: 0 20px 0 10px; font-size: 15px;">' . $row['description'] . '<p>
-                    </div>
-
-                    </div>';
+                        <div class="image" style="border-top-left-radius: 10px; border-top-right-radius: 10px">
+                            <img src="data:image/jpeg;base64,' . base64_encode($row['image']) . '" alt="" width="100%" height="250px">
+                        </div>
+                        <div class="price" style="color: rebeccapurple; font-size: 20px; font-weight: bold; text-align: right; position: relative; top: -20px; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: white; border-top:3px solid #90ee90">
+                          <h2 style="margin: 0 20px 0 10px" font-size: 25px> R$ ' . $row['price'] . '<h2>
+                        </div>
+                        <div class="title" style="text-align: left; position: relative; top: -45px; background-color: white; font-size: 20px; font-weight: bold; color: rebeccapurple">
+                            <h1 style="margin: 0 20px 0 10px; font-size: 20px;">' . $row['title'] . '<h1>
+                        </div>
+                        <div class="category" style="text-align: right; position: relative; top: -73px; background-color: white; font-size: 20px; font-weight: bold;color: rebeccapurple">
+                            <p style="margin: 0 20px 0 10px; font-size: 20px;"> Categoria: ' . $row['category'] . '<p>
+                        </div>
+                        <div class="description" style="text-align: left; position: relative; top: -80px; background-color: white; font-size: 20px; font-weight: bold; width: auto height: auto; color: rebeccapurple ;front-family: sans-serif  ">
+                            <p style="margin: 0 20px 0 10px; font-size: 15px;">' . $row['description'] . '<p>
+                        </div>
+                       
+                </div>';
                 }
             }
-
 
             ?>
         </div>
@@ -213,190 +229,21 @@ if (isset($_GET['config'])) {
             foreach ($image['tmp_name'] as $key => $value) {
                 $imageData = file_get_contents($value);
 
-                $sql = "INSERT INTO posts (`title`, `price`, `description`, `category`, `image`, `users_id`) VALUES (?, ?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO posts (`title`, `price`, `description`, `category`, `image`, `users_id`, `situation`) VALUES (?, ?, ?, ?, ?, ?, 'pending')";
                 $stmt = $con->prepare($sql);
                 $stmt->bind_param("ssssss", $title, $price, $description, $category, $imageData, $users_id);
                 $stmt->execute();
             }
 
             if ($stmt->affected_rows > 0) {
-                echo '<script>alert("Anúncio adicionado com sucesso!"); window.location.href = "?id=' . $id . '"</script>';
+                echo '<script>alert("Anúncio adicionado com sucesso!"); window.location.href = "index.php?id=' . $id . '"</script>';
             } else {
                 echo "<script>alert('Erro ao adicionar anúncio.')</script>";
             }
         }
         ?>
-
-        </div>
-
-        <?php
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
-            $sql = "SELECT * FROM users WHERE `id` = ?";
-            $stmt = $con->prepare($sql);
-            $stmt->bind_param("s", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
-            $users_name = @$row['name'];
-            $users_email = @$row['email'];
-            $users_phone = @$row['phone'];
-        }
-
-        if (isset($_POST['alterar'])) {
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $phone = $_POST['phone'];
-            $password = md5($_POST['password']);
-            $confirmPassword = md5($_POST['confirmPassword']);
-            if ($password === $confirmPassword) {
-                $sql = "UPDATE users SET `name` = ?, `email` = ?, `phone` = ? WHERE `id` = ?";
-                $stmt = $con->prepare($sql);
-                $stmt->bind_param("sssi", $name, $email, $phone, $id);
-                $stmt->execute();
-                if ($stmt->affected_rows > 0) {
-                    echo "<script>alert('Informações atualizadas com sucesso!')</script>";
-                } else {
-                    echo "Erro ao atualizar informações.";
-                }
-            } else {
-                echo "Password and Confirm Password are not the same";
-            }
-        }
-
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
-            $sql = "SELECT * FROM users WHERE `id` = ?";
-            $stmt = $con->prepare($sql);
-            $stmt->bind_param("s", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
-            if (isset($row['id'])) {
-                $sql = "SELECT * FROM posts WHERE `users_id` = ?";
-                $stmt = $con->prepare($sql);
-                $stmt->bind_param("s", $users_id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $row = $result->fetch_assoc();
-
-                $id = @$row['id'];
-                $title = @$row['title'];
-                $price = @$row['price'];
-                $description = @$row['description'];
-                $category = @$row['category'];
-            }
-        }
-
-        ?>
-
-        <div id="config-Modal" class="container-modal" style="display: none; width: 100%; height: 100%; background-color: rgba(128, 128, 128, 0.5); position: fixed; top: 0;">
-            <div class="modal-conteudo" style="flex: 1; padding: 40px; box-sizing: border-box; border-radius: 5px; background-color: white; color: rebeccapurple; width: 80rem; position: fixed; top: 100px; left: 50%; transform: translateX(-50%); ">
-                <span class="fechar2" style="position: absolute; top: 10px; left: 20px; font-size: 25px; cursor: pointer">&times;</span>
-                <h1 style="text-align: left;">Configuração de conta</h1>
-                <form action="#" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column ;width: 30rem ;margin-left:25px ">
-                    <label for="name">Nome:</label>
-                    <input type="text" id="name" name="name" value="<?php echo $users_name ?>" required>
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="<?php echo $users_email ?>" required>
-                    <label for="password">Senha:</label>
-                    <input type="password" id="password" name="password" required>
-                    <label for="confirmPassword">Confirmar senha:</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required>
-                    <label for="phone">Telefone:</label>
-                    <input type="text" id="phone" name="phone" value="<?php echo $users_phone ?>" required>
-                    <input type="submit" name="alterar" value="Alterar dados">
-                </form>
-                <div style="border-left: 2px solid black; height: 100%; position: absolute; left: 50%; top: 0; transform: translateX(-50%)"></div>
-                <div class="modal-anuncios" style="display: flex; flex-direction: column; width: 38rem; position: fixed; top: 0rem; right: 0rem; overflow: auto; max-height: 90%; padding: 40px; box-sizing: border-box; border-radius: 5px; background-color: white; color: rebeccapurple;">
-                    <h1>Seus anúncios</h1>
-                    <?php
-                    if (isset($_GET['id'])) {
-                        $id = $_GET['id'];
-                        $sql = "SELECT * FROM posts WHERE `users_id` = ?";
-                        $stmt = $con->prepare($sql);
-                        $stmt->bind_param("s", $id);
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-                        while ($row = $result->fetch_assoc()) {
-                            echo '<form action="#" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column ;width: 30rem ;margin-left:25px ">
-                            <table style="width: 100%;">
-                                    <tr>
-                                        <th style="width: 25%">Título:</th>
-                                        <td style="width: 75%"><input type="text" name="title" value="' . $row['title'] . '" required></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Preço:</th>
-                                        <td><input type="text" name="price" value="' . $row['price'] . '" required></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Descrição:</th>
-                                        <td><input type="text" name="description" value="' . $row['description'] . '"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Categoria:</th>
-                                        <td>
-                                            <select name="category" style="width: 15rem; height: 2rem; margin-top: 10px; border-radius: 5px; border: 1px solid #ccc;">
-                                                <option value="">Selecione aqui</option>
-                                                <option value="Decoração"' . ($row['category'] === 'Decoração' ? ' selected' : '') . '>Decoração</option>
-                                                <option value="Tecnologia"' . ($row['category'] === 'Tecnologia' ? ' selected' : '') . '>Tecnologia</option>
-                                                <option value="Carros"' . ($row['category'] === 'Carros' ? ' selected' : '') . '>Carros</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Foto:</th>
-                                            <td><input type="file" name="image[]" accept="image/*"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" style="text-align: right;">
-                                            <input type="hidden" name="id" value="' . $row['id'] . '">
-                                            <input type="submit" name="alterar-anuncio" value="Alterar dados">
-                                            <input type="submit" name="deletar-anuncio" value="Deletar anúncio">
-                                        </td>
-                                    </tr>
-                                   
-                                </table>
-                                </form>';
-                        }
-                    }
-                    if (isset($_POST['alterar-anuncio'])) {
-                        $id = $_POST['id'];
-                        $title = $_POST['title'];
-                        $price = $_POST['price'];
-                        $description = $_POST['description'];
-                        $category = $_POST['category'];
-                        $sql = "UPDATE `posts` SET `title` = ?, `price` = ?, `description` = ?, `category` = ? WHERE `id` = ?";
-                        $stmt = $con->prepare($sql);
-                        $stmt->bind_param("ssssi", $title, $price, $description, $category, $id);
-                        $stmt->execute();
-                        if ($stmt->affected_rows > 0) {
-                            echo '<script>alert("Anúncio alterado com sucesso")</script>';
-                        } else {
-                            echo '<script>alert("Não houve alteração no anúncio")</script>';
-                        }
-                    }
-                    if (isset($_POST['deletar-anuncio'])) {
-                        $id = $_POST['id'];
-                        $sql = "DELETE FROM `posts` WHERE `id` = ?";
-                        $stmt = $con->prepare($sql);
-                        $stmt->bind_param("i", $id);
-                        $stmt->execute();
-                        if ($stmt->affected_rows > 0) {
-                            echo '<script>alert("Anúncio deletado com sucesso")</script>';
-                        } else {
-                            echo '<script>alert("Erro ao deletar anúncio")</script>';
-                        }
-                    }
-
-                    ?>
-                </div>
-            </div>
-
-        </div>
     </main>
     <footer style="position: fixed; bottom: 0; width: 100vw; height: 30px; background-color: black; color: white; font-size: 8px; text-align: center; border-radius: 0px 0px 10px 10px">
         <h1>Direitos Reservados - 2024 por || Winicius Neves || João Brasil || Vinicius Anacleto || Matheus Ziem ||</h1>
     </footer>
-    <?php echo $configmodel; ?>
     <?php echo $modalScript; ?>
