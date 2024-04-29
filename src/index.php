@@ -159,6 +159,11 @@ if (isset($_GET['config'])) {
         </div>
         <div class="container-posts " id="filtered">
  <?php
+     if (isset($_SESSION['role']) && $_SESSION['role'] !== "regular") {
+                $sql = "SELECT * FROM posts ORDER BY id DESC";
+            } else {
+                $sql = "SELECT * FROM posts WHERE situation = 'Aprovado' ORDER BY id DESC";
+     }
 
             $result = $con->query($sql);
             if ($result->num_rows > 0) {
