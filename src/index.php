@@ -56,15 +56,21 @@ if (isset($_GET['anunciar'])) {
             $stmt->execute();
             $result = $stmt->get_result();
 
-            if ($result->num_rows > 0) {
+             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $_SESSION['name'] = $row['name'];
                 echo '<div style="position: absolute; top: 1rem; right: 1rem;">';
                 echo '<button id="btnConfig" style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; font-weight: bold; background: none; border: none; cursor: pointer;">Menu</button>';
+<<<<<<< HEAD
                 echo '<ul id="menuConfig" style="display: none; width: 25rem; list-style-type: none; padding: 0; margin: 0; position:fixed; top: 5rem;height:100%  ; background-color: rgba(76, 175, 80, 0.7); border: 1px solid rebeccapurple; border-radius: 5px;">
                         <li><a href="./views/profile.php?id=' . $id . '" style="display: block; padding: 10px; text-decoration: none; color: white;border-bottom: 1px solid white;">Configurações</a></li>
                         <li><a href="./views/ads.php?id=' . $id . '" style="display: block; padding: 10px; text-decoration: none; color: white; border-bottom: 1px solid white;">Anúncios</a></li>
                         <li><a href="?" style="display: block; padding: 10px; text-decoration: none; color: white; border-bottom: 1px solid white;">Sair</a></li>
+=======
+                echo '<ul id="menuConfig" style="display: none; width: 100px; list-style-type: none; padding: 0; margin: 0; position: absolute; top: 2rem; right: 2rem; background-color: rgba(76, 175, 80, 0.7); border: 1px solid rebeccapurple; border-radius: 5px;">
+                        <li style="border-bottom: 1px solid #ccc;"><a href="?id=' . htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8') . '&config" style="display: block; padding: 10px; text-decoration: none; color: white;">Conta</a></li>
+                        <li><a href="?" style="display: block; padding: 10px; text-decoration: none; color: white;">Sair</a></li>
+>>>>>>> b0b8c0266a3bf1de8d65c8cfb3dfba5b965911bc
                     </ul>';
                 echo '</div>';
                 echo '<script>
@@ -133,12 +139,19 @@ if (isset($_GET['anunciar'])) {
 
         </div>
         <div class="container-posts " id="filtered">
-            <?php
+ <?php
 
+<<<<<<< HEAD
             if (isset($_SESSION['role']) && $_SESSION['role'] !== "regular") {
                 $sql = "SELECT * FROM posts ORDER BY id DESC";
             } else {
                 $sql = "SELECT * FROM posts WHERE situation = 'Aprovado' ORDER BY id DESC";
+=======
+            if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
+                $sql = "SELECT * FROM posts ORDER BY id DESC";
+            } else {
+                $sql = "SELECT * FROM posts WHERE situation = 'approved' ORDER BY id DESC";
+>>>>>>> b0b8c0266a3bf1de8d65c8cfb3dfba5b965911bc
             }
             $result = $con->query($sql);
             if ($result->num_rows > 0) {
@@ -232,4 +245,8 @@ if (isset($_GET['anunciar'])) {
     <footer style="position: fixed; bottom: 0; width: 100vw; height: 30px; background-color: black; color: white; font-size: 8px; text-align: center; border-radius: 0px 0px 10px 10px">
         <h1>Direitos Reservados - 2024 por || Winicius Neves || João Brasil || Vinicius Anacleto || Matheus Ziem ||</h1>
     </footer>
+<<<<<<< HEAD
+=======
+    <?php echo $configmodel; ?>
+>>>>>>> b0b8c0266a3bf1de8d65c8cfb3dfba5b965911bc
     <?php echo $modalScript; ?>
