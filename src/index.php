@@ -140,6 +140,7 @@ if (isset($_GET['anunciar'])) {
         </div>
         <div class="container-posts " id="filtered">
  <?php
+<<<<<<< HEAD
 
 <<<<<<< HEAD
             if (isset($_SESSION['role']) && $_SESSION['role'] !== "regular") {
@@ -153,6 +154,14 @@ if (isset($_GET['anunciar'])) {
                 $sql = "SELECT * FROM posts WHERE situation = 'approved' ORDER BY id DESC";
 >>>>>>> b0b8c0266a3bf1de8d65c8cfb3dfba5b965911bc
             }
+=======
+     if (isset($_SESSION['role']) && $_SESSION['role'] !== "regular") {
+                $sql = "SELECT * FROM posts ORDER BY id DESC";
+            } else {
+                $sql = "SELECT * FROM posts WHERE situation = 'Aprovado' ORDER BY id DESC";
+     }
+
+>>>>>>> b547533fe306a4facc0bed64dc12b550f0d69ff9
             $result = $con->query($sql);
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
