@@ -56,7 +56,7 @@ if (isset($_GET['anunciar'])) {
             $stmt->execute();
             $result = $stmt->get_result();
 
-             if ($result->num_rows > 0) {
+            if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $_SESSION['name'] = $row['name'];
                 echo '<div style="position: absolute; top: 1rem; right: 1rem;">';
@@ -133,13 +133,27 @@ if (isset($_GET['anunciar'])) {
 
         </div>
         <div class="container-posts " id="filtered">
- <?php
+            <?php
+            if (isset($_GET['id'])) {
+                $id = $_GET['id'];
+                $sql = "SELECT `role` FROM users WHERE id = ?";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("s", $id);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-     if (isset($_SESSION['role']) && $_SESSION['role'] !== "regular") {
+                if ($result->num_rows == 1) {
+                    $row = $result->fetch_assoc();
+                    $role = $row['role'];
+                }
+            }
+
+            if (isset($row['role']) && $row['role'] == 'admin') {
                 $sql = "SELECT * FROM posts ORDER BY id DESC";
             } else {
                 $sql = "SELECT * FROM posts WHERE situation = 'Aprovado' ORDER BY id DESC";
-     }
+            }
+
             $result = $con->query($sql);
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
