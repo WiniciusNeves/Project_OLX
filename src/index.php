@@ -160,11 +160,6 @@ if (isset($_GET['config'])) {
         <div class="container-posts " id="filtered">
  <?php
 
-            if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
-                $sql = "SELECT * FROM posts ORDER BY id DESC";
-            } else {
-                $sql = "SELECT * FROM posts WHERE situation = 'approved' ORDER BY id DESC";
-            }
             $result = $con->query($sql);
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
