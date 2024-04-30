@@ -149,7 +149,7 @@ if (isset($_GET['anunciar'])) {
             }
 
             if (isset($row['role']) && $row['role'] == 'admin') {
-                $sql = "SELECT * FROM posts where category = 'carro' ORDER BY id DESC";
+                $sql = "SELECT * FROM posts where category = 'carros' ORDER BY id DESC";
             } else {
                 $sql = "SELECT * FROM posts WHERE situation = 'Aprovado' AND category = 'carro' ORDER BY id DESC";
             }
