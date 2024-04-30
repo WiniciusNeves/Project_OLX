@@ -16,18 +16,29 @@
 
             <?php
             include('config.php');
-
             if (isset($_GET['id'])) {
                 $id = $_GET['id'];
-                $sql = "SELECT * FROM posts WHERE `users_id` = ?";
+                $sql = "SELECT `role` FROM users WHERE id = ?";
                 $stmt = $con->prepare($sql);
                 $stmt->bind_param("s", $id);
                 $stmt->execute();
-                $result = $stmt->get_result();
+                $result_role = $stmt->get_result();
+                $row_role = $result_role->fetch_assoc();
 
+                if ($row_role && $row_role['role'] == 'admin') {
+                    $sql = "SELECT * FROM posts";
+                    $stmt = $con->prepare($sql);
+                } else {
+                    $sql = "SELECT * FROM posts WHERE `users_id` = ?";
+                    $stmt = $con->prepare($sql);
+                    $stmt->bind_param("s", $id);
+                }
 
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
+                $stmt->execute();
+                $result_posts = $stmt->get_result();
+
+                if ($result_posts->num_rows > 0) {
+                    while ($row = $result_posts->fetch_assoc()) {
                         echo '<form action="#" method="post" enctype="multipart/form-data">
             <table>
             <tr>
@@ -54,21 +65,13 @@
                 </td>
             </tr>';
 
-                        // Verifica se o usuário é um administrador
-                        $sql = "SELECT `role` FROM users WHERE id = ?";
-                        $stmt = $con->prepare($sql);
-                        $stmt->bind_param("s", $id);
-                        $stmt->execute();
-                        $result2 = $stmt->get_result();
-                        $row3 = $result2->fetch_assoc();
-
-                        if (is_array($row3) && $row3['role'] == 'admin') {
+                        if ($row_role && $row_role['role'] == 'admin') {
                             echo '<tr>
                 <th>Situação:</th>
                 <td>
                     <select name="situation">
                         <option value="">Selecione aqui</option>
-                        <option value="Pendente" ' . ($row['situation'] === 'pending' ? 'selected' : '') . '>Pendente</option>
+                        <option value="Pendente" ' . ($row['situation'] === 'Pendente' ? 'selected' : '') . '>Pendente</option>
                         <option value="Aprovado" ' . ($row['situation'] === 'Aprovado' ? 'selected' : '') . '>Aprovado</option>
                         <option value="Reprovado" ' . ($row['situation'] === 'Reprovado' ? 'selected' : '') . '>Reprovado</option>
                     </select>
@@ -97,6 +100,8 @@
                     echo "Nenhum anúncio encontrado.";
                 }
             }
+
+
             if (isset($_POST['aprovar-anuncio'])) {
                 $id = $_POST['id'];
                 $situation = $_POST['situation'];
@@ -106,9 +111,15 @@
                 $stmt->execute();
 
                 if ($stmt->affected_rows > 0) {
-                    echo '<script>alert("Anúncio aprovado com sucesso!"); window.location.href="ads.php?id=' . $_GET['id'] . '"</script>';
+                    echo '<script>
+                alert("Anúncio aprovado com sucesso!");
+                window.location.href = "ads.php?id=' . $_GET['id'] . '"
+            </script>';
                 } else {
-                    echo "<script>alert('Erro ao aprovar anúncio.'); window.location.href='ads.php'</script>";
+                    echo "<script>
+                alert('Erro ao aprovar anúncio.');
+                window.location.href = 'ads.php'
+            </script>";
                 }
             }
             if (isset($_POST['alterar-anuncio'])) {
@@ -122,9 +133,15 @@
                 $stmt->bind_param("ssssi", $title, $price, $description, $category, $id);
                 $stmt->execute();
                 if ($stmt->affected_rows > 0) {
-                    echo '<script>alert("Anúncio alterado com sucesso"); window.location.href="ads.php?id=' . $_GET['id'] . '"</script>';
+                    echo '<script>
+                alert("Anúncio alterado com sucesso");
+                window.location.href = "ads.php?id=' . $_GET['id'] . '"
+            </script>';
                 } else {
-                    echo "<script>alert('Erro ao alterar anúncio.');'</script>";
+                    echo "<script>
+                alert('Erro ao alterar anúncio.');
+                '
+            </script>";
                 }
             }
             if (isset($_POST['deletar-anuncio'])) {
@@ -134,9 +151,15 @@
                 $stmt->bind_param("i", $id);
                 $stmt->execute();
                 if ($stmt->affected_rows > 0) {
-                    echo '<script>alert("Anúncio deletado com sucesso"); window.location.href="ads.php?id=' . $_GET['id'] . '"</script>';
+                    echo '<script>
+                alert("Anúncio deletado com sucesso");
+                window.location.href = "ads.php?id=' . $_GET['id'] . '"
+            </script>';
                 } else {
-                    echo "<script>alert('Erro ao deletar anúncio.');'</script>";
+                    echo "<script>
+                alert('Erro ao deletar anúncio.');
+                '
+            </script>";
                 }
             }
 
