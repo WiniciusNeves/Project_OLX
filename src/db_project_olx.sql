@@ -24,6 +24,7 @@ CREATE TABLE posts (
     `category` VARCHAR(255),
     `image` Longblob(255),
     `users_id` INT,
+    `situation` VARCHAR(255),
     FOREIGN KEY (users_id) REFERENCES users(id)
 );
 
