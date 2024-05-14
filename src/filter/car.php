@@ -45,7 +45,7 @@ if (isset($_GET['anunciar'])) {
 <body>
     <header>
         <div class="container-header">
-            <a href="index.php"><img src="../public/images/logo.jpeg" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;"></a>
+            <a href="../index.php"><img src="../public/images/logo.jpeg" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;"></a>
 
             <?php
             $id = (@$_GET['id']);
