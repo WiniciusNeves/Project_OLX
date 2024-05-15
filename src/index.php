@@ -1,7 +1,8 @@
 <?php
 include './views/config.php';
 if (isset($_GET['search'])) {
-    require('verifica.php'); 
+    $search = $_GET['search'];
+    include 'verifica.php';
 }
 ?>
 <?php
@@ -16,7 +17,7 @@ if (isset($_GET['anunciar'])) {
 
             span.onclick = function() {
                 modal.style.display = "none";
-                window.location.href = "index.php";
+                window.location.href = "index.php?search";
             };
 
             window.onclick = function(event) {
@@ -47,9 +48,14 @@ if (isset($_GET['anunciar'])) {
 <body>
     <header>
         <div class="container-header">
-            <a href="../index.php"><img src="./public/images/logo.jpeg" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;"></a>
+            <?php if (isset($_SESSION['id'])) { ?>
+                <a href="index.php?search"><img src="./public/images/logo.jpeg" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;"></a>
+            <?php } else { ?>
+                <a href="index.php"><img src="./public/images/logo.jpeg" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;"></a>
+            <?php } ?>
 
             <?php
+
             $id = (@$_SESSION['id']);
             $sql = "SELECT * FROM users WHERE `id` = ?";
 

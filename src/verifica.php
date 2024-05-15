@@ -1,7 +1,8 @@
 <?php
 include(__DIR__ . '../views/config.php');
 
-session_start(); //iniciamos a sess�o que foi aberta
+session_start();
+session_destroy();
 
 if (isset($_SESSION['id'], $_SESSION['email'])) {
     $id = $_SESSION['id'];
@@ -14,4 +15,6 @@ if (isset($_SESSION['id'], $_SESSION['email'])) {
     }
 } else {
     header("Location: ./index.php");
+    exit();
+
 }
