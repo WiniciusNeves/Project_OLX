@@ -26,38 +26,34 @@
             <a href="register.php">Don't have an account?</a>
         </div>
     </form>
-    
-   <?php
-   include('config.php');
-   session_start();
-   
-   if (isset($_POST['submit'])) {
-    $Email = $_POST['Email'];
-    $Password = md5($_POST['Password']);
-    
-    $sql = "SELECT id FROM users WHERE Email = ? AND Password = ?";
-    $stmt = $con->prepare($sql);
-    $stmt->bind_param("ss", $Email, $Password);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows > 0) {
-      
-        $row = $result->fetch_assoc();
-        $id = $row['id'];
 
-        $_SESSION['Email'] = $Email;
-        $_SESSION['id'] = $id;
+    <?php
+    include('config.php');
+    session_start();
 
-        header('location: ../index.php?id=' . $id);
-        exit();
-    } else {
- 
-        echo "Invalid Email or Password";
+    if (isset($_POST['submit'])) {
+        $Email = $_POST['Email'];
+        $Password = md5($_POST['Password']);
+
+        $sql = "SELECT id FROM users WHERE Email = ? AND Password = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("ss", $Email, $Password);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $id = $row['id'];
+            $_SESSION['id'] = $id;
+            $_SESSION['email'] = $Email;
+            header("Location: ../index.php?search");
+            exit();
+        } else {
+            echo "Invalid Email or Password";
+        }
     }
-}
-?>
-   
+    ?>
+
 </body>
 
 </html>

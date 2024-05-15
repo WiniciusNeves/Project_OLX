@@ -164,7 +164,7 @@
             }
 
             ?>
-            <a href="../index.php?id=<?php echo $id ?>"><input type="button" value="Voltar"></a>
+            <a href="../index.php?search"><input type="button" value="Voltar"></a>
         </div>
 
     </main>

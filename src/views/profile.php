@@ -27,7 +27,6 @@
             $users_email = @$row['email'];
             $users_phone = @$row['phone'];
         }
-
         ?>
 
         <h1 style="text-align: left;">Configuração de conta</h1>
@@ -43,7 +42,7 @@
             <label for="phone">Telefone:</label>
             <input type="text" id="phone" name="phone" value="<?php echo $users_phone ?>" required>
             <input type="submit" name="alterar" value="Alterar dados">
-            <a href="../index.php?id=<?php echo $id ?>"><input type="button" name="voltar" value="Voltar"></a>
+            <a href="../index.php?search"><input type="button" name="voltar" value="Voltar"></a>
 
         </form>
         <?php

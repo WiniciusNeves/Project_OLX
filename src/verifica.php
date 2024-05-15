@@ -1,8 +1,17 @@
 <?php
-include('./views/config.php');
-session_start();
-if (isset($_GET['id']) && isset($_SESSION['id']) ) {
-    header('Location: ../index.php?id=' . $_SESSION['id']);
-    exit;
-}
+include(__DIR__ . '../views/config.php');
 
+session_start(); //iniciamos a sess�o que foi aberta
+
+if (isset($_SESSION['id'], $_SESSION['email'])) {
+    $id = $_SESSION['id'];
+    $email = $_SESSION['email'];
+
+    if ($id == null) {
+        header("Location: ./register.php");
+    } else {
+        error_log("verifica.php");
+    }
+} else {
+    header("Location: ./index.php");
+}

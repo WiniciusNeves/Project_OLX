@@ -1,8 +1,9 @@
 <?php
 include '../views/config.php';
-//require('verifica.php')
+if (isset($_GET['search'])) {
+    require('../verifica.php');
+}
 ?>
-
 <?php
 $modalScript = '';
 if (isset($_GET['anunciar'])) {
@@ -15,7 +16,8 @@ if (isset($_GET['anunciar'])) {
 
             span.onclick = function() {
                 modal.style.display = "none";
-                window.location.href = "index.php?' . htmlspecialchars($_GET['id']) . '";
+                window.history.go(-1);
+
             };
 
             window.onclick = function(event) {
@@ -27,6 +29,7 @@ if (isset($_GET['anunciar'])) {
     </script>';
 }
 ?>
+
 
 
 
@@ -45,10 +48,10 @@ if (isset($_GET['anunciar'])) {
 <body>
     <header>
         <div class="container-header">
-            <a href="index.php"><img src="../public/images/logo.jpeg" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;"></a>
+            <a href="../index.php"><img src="../public/images/logo.jpeg" alt="" width="50" height="50" style="margin: 10px 50px 0px 50px;"></a>
 
             <?php
-            $id = (@$_GET['id']);
+            $id = (@$_SESSION['id']);
             $sql = "SELECT * FROM users WHERE `id` = ?";
 
             $stmt = $con->prepare($sql);
@@ -64,7 +67,7 @@ if (isset($_GET['anunciar'])) {
                 echo '<ul id="menuConfig" style="display: none; width: 25rem; list-style-type: none; padding: 0; margin: 0; position:fixed; top: 5rem;height:100%  ; background-color: rgba(76, 175, 80, 0.7); border: 1px solid rebeccapurple; border-radius: 5px;">
                         <li><a href="../views/profile.php?id=' . $id . '" style="display: block; padding: 10px; text-decoration: none; color: white;border-bottom: 1px solid white;">Configurações</a></li>
                         <li><a href="../views/ads.php?id=' . $id . '" style="display: block; padding: 10px; text-decoration: none; color: white; border-bottom: 1px solid white;">Anúncios</a></li>
-                        <li><a href="?" style="display: block; padding: 10px; text-decoration: none; color: white; border-bottom: 1px solid white;">Sair</a></li>
+                        <li><a href="logout.php" style="display: block; padding: 10px; text-decoration: none; color: white; border-bottom: 1px solid white;">Sair</a></li>
                     </ul>';
                 echo '</div>';
                 echo '<script>
@@ -94,7 +97,7 @@ if (isset($_GET['anunciar'])) {
         <div class="container-aside">
             <div class="categories"">
                 <div class=" box" id="box1">
-                <a href="../filter/tec.php?id=<?php echo $id ?> " style="text-decoration: none; "><img src="../public/images/1.png" width="50" height="50" alt="" style="margin-left: 8px;">
+                <a href="./tec.php?search/tecnologia" style="text-decoration: none; "><img src="../public/images/1.png" width="50" height="50" alt="" style="margin-left: 8px;">
                     <ul style="list-style-type: none; padding: 0; margin: 0">
                         <li>tecnologia</li>
                     </ul>
@@ -102,14 +105,14 @@ if (isset($_GET['anunciar'])) {
             </div>
 
             <div class="box" id="box2">
-                <a href="../filter/dec.php?id=<?php echo $id ?> " style="text-decoration: none; "><img src="../public/images/2.png" width="50" height="50" alt="" style="margin-left: 10px;">
+                <a href="./dec.php?search/decoração" style="text-decoration: none; "><img src="../public/images/2.png" width="50" height="50" alt="" style="margin-left: 10px;">
                     <ul style="list-style-type: none; padding: 0; margin: 0">
                         <li>decoração</li>
                     </ul>
                 </a>
             </div>
             <div class="box" id="box3">
-                <a href="../filter/car.php?id=<?php echo $id ?> " style="text-decoration: none;"><img src="../public/images/3.png" width="50" height="50" alt="">
+                <a href="./car.php?search/veiculos" style="text-decoration: none;"><img src="../public/images/3.png" width="50" height="50" alt="">
                     <ul style="list-style-type: none; padding: 0; margin: 0">
                         <li>Veiculos</li>
                     </ul>
@@ -123,7 +126,7 @@ if (isset($_GET['anunciar'])) {
             <span style="font-size: 20px; font-weight: bold; color: rebeccapurple; text-decoration: none; position: relative; top: 100px; left: 80px">
                 <?php
                 if (isset($_SESSION['name'])) {
-                    echo '<a href="?id=' . htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8') . '&anunciar"><input type="button" value="Adicionar anuncio"></a>';
+                    echo '<a href="?search=carros' . htmlspecialchars($_SESSION['id'], ENT_QUOTES, 'UTF-8') . '&anunciar"><input type="button" value="Adicionar anuncio"></a>';
                 } elseif (!isset($_SESSION['name']) && !isset($_GET['anunciar'])) {
                     echo '<h2 style="margin: 10px 50px 0px 50px; font-size: 20px; color: rebeccapurple; position: absolute;top: 1rem; right: 15rem; text-align: center ; font-weight: bold">Aqui está faltando anúncio, venha e faça o seu!</h2>';
                 }
