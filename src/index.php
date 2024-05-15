@@ -156,9 +156,11 @@ if (isset($_GET['anunciar'])) {
                 $sql = "SELECT * FROM posts WHERE situation = 'Aprovado' ORDER BY id DESC";
             }
 
-            $result = $con->query($sql);
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
+            if ($result = $con->query($sql)) {
+
+                $num_rows = $result->num_rows;
+                if ($num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
                     echo '<div class="post" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); width: 300px; height: 500px; margin: 20px; float: left; border-radius: 10px; position: relative; top: 100px; left: 40px ; background-color: white ">
                         <div class="image" style="border-top-left-radius: 10px; border-top-right-radius: 10px">
                             <img src="data:image/jpeg;base64,' . base64_encode($row['image']) . '" alt="" width="100%" height="250px">
@@ -179,7 +181,7 @@ if (isset($_GET['anunciar'])) {
                 </div>';
                 }
             }
-
+        }
             ?>
         </div>
 
