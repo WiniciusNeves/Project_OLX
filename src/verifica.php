@@ -2,7 +2,7 @@
 include(__DIR__ . '../views/config.php');
 
 session_start();
-session_destroy();
+
 
 if (isset($_SESSION['id'], $_SESSION['email'])) {
     $id = $_SESSION['id'];
@@ -14,7 +14,6 @@ if (isset($_SESSION['id'], $_SESSION['email'])) {
         error_log("verifica.php");
     }
 } else {
-    header("Location: ./index.php");
     exit();
 
 }
