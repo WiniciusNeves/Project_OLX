@@ -14,6 +14,5 @@ if (isset($_SESSION['id'], $_SESSION['email'])) {
         error_log("verifica.php");
     }
 } else {
-    exit();
 
 }

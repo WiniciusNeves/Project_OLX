@@ -71,7 +71,7 @@ if (isset($_GET['anunciar'])) {
                 echo '<ul id="menuConfig" style="display: none; width: 25rem; list-style-type: none; padding: 0; margin: 0; position: fixed; top: 5rem; background-color: rgba(76, 175, 80, 0.7); border: 1px solid rebeccapurple; border-radius: 5px;">
                         <li><a href="./views/profile.php?id=' . $id . '" style="display: block; padding: 10px; text-decoration: none; color: white; border-bottom: 1px solid white;">Configurações</a></li>
                         <li><a href="./views/ads.php?id=' . $id . '" style="display: block; padding: 10px; text-decoration: none; color: white; border-bottom: 1px solid white;">Anúncios</a></li>
-                        <li><a href="logout.php" style="display: block; padding: 10px; text-decoration: none; color: white; border-bottom: 1px solid white;">Sair</a></li>
+                        <li><a href="./views/logout.php" style="display: block; padding: 10px; text-decoration: none; color: white; border-bottom: 1px solid white;">Sair</a></li>
                     </ul>';
                 echo '</div>';
                 echo '<script>
@@ -99,7 +99,7 @@ if (isset($_GET['anunciar'])) {
         <div class="container-aside">
             <div class="categories">
                 <div class="box" id="box1">
-                    <a href="./filter/tec.php?search=tecnologia" style="text-decoration: none;">
+                    <a href="index.php?search=tecnologia" style="text-decoration: none;">
                         <img src="./public/images/1.png" width="50" height="50" alt="Tecnologia" style="margin-left: 8px;">
                         <ul style="list-style-type: none; padding: 0; margin: 0">
                             <li>tecnologia</li>
@@ -107,7 +107,7 @@ if (isset($_GET['anunciar'])) {
                     </a>
                 </div>
                 <div class="box" id="box2">
-                    <a href="./filter/dec.php?search=decoração" style="text-decoration: none;">
+                    <a href="index.php?search=decoracao" style="text-decoration: none;">
                         <img src="./public/images/2.png" width="50" height="50" alt="Decoração" style="margin-left: 10px;">
                         <ul style="list-style-type: none; padding: 0; margin: 0">
                             <li>decoração</li>
@@ -115,7 +115,7 @@ if (isset($_GET['anunciar'])) {
                     </a>
                 </div>
                 <div class="box" id="box3">
-                    <a href="./filter/car.php?search=veiculos" style="text-decoration: none;">
+                    <a href="index.php?search=veiculos" style="text-decoration: none;">
                         <img src="./public/images/3.png" width="50" height="50" alt="Veículos">
                         <ul style="list-style-type: none; padding: 0; margin: 0">
                             <li>Veículos</li>
@@ -153,10 +153,24 @@ if (isset($_GET['anunciar'])) {
                 }
             }
 
+            $search = isset($_GET['search']) ? $_GET['search'] : '';
+
             if (isset($role) && $role == 'admin') {
                 $sql = "SELECT * FROM posts ORDER BY id DESC";
             } else {
-                $sql = "SELECT * FROM posts WHERE situation = 'Aprovado' ORDER BY id DESC";
+                switch ($search) {
+                    case 'tecnologia':
+                        $sql = "SELECT * FROM posts WHERE category = 'tecnologia' AND situation = 'Aprovado' ORDER BY id DESC";
+                        break;
+                    case 'decoracao':
+                        $sql = "SELECT * FROM posts WHERE category = 'decoracao' AND situation = 'Aprovado' ORDER BY id DESC";
+                        break;
+                    case 'veiculos':
+                        $sql = "SELECT * FROM posts WHERE category = 'carros' AND situation = 'Aprovado' ORDER BY id DESC";
+                        break;
+                    default:
+                        $sql = "SELECT * FROM posts WHERE situation = 'Aprovado' ORDER BY id DESC";
+                }
             }
 
             if ($result = $con->query($sql)) {
@@ -164,22 +178,22 @@ if (isset($_GET['anunciar'])) {
                 if ($num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         echo '<div class="post" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); width: 300px; height: 500px; margin: 20px; float: left; border-radius: 10px; position: relative; top: 100px; left: 40px; background-color: white">
-                        <div class="image" style="border-top-left-radius: 10px; border-top-right-radius: 10px">
-                            <img src="data:image/jpeg;base64,' . base64_encode($row['image']) . '" alt="" width="100%" height="250px">
-                        </div>
-                        <div class="price" style="text-align: right; position: relative; top: -45px; background-color: white; border-top: 3px solid #90ee90">
-                          <h2 style="margin: 0 20px 0 10px; font-size: 25px;">R$ ' . $row['price'] . '</h2>
-                        </div>
-                        <div class="title" style="text-align: left; position: relative; top: -45px; background-color: white; font-size: 20px; font-weight: bold; color: rebeccapurple">
-                            <h1 style="margin: 0 20px 0 10px; font-size: 20px;">' . $row['title'] . '</h1>
-                        </div>
-                        <div class="category" style="text-align: right; position: relative; top: -73px; background-color: white; font-size: 20px; font-weight: bold; color: rebeccapurple">
-                            <p style="margin: 0 20px 0 10px; font-size: 20px;">Categoria: ' . $row['category'] . '</p>
-                        </div>
-                        <div class="description" style="text-align: left; position: relative; top: -80px; background-color: white; font-size: 20px; font-weight: bold; width: auto; height: auto; color: rebeccapurple; font-family: sans-serif;">
-                            <p style="margin: 0 20px 0 10px; font-size: 15px;">' . $row['description'] . '</p>
-                        </div>
-                    </div>';
+                    <div class="image" style="border-top-left-radius: 10px; border-top-right-radius: 10px">
+                        <img src="data:image/jpeg;base64,' . base64_encode($row['image']) . '" alt="" width="100%" height="250px">
+                    </div>
+                    <div class="price" style="text-align: right; position: relative; top: -45px; background-color: white; border-top: 3px solid #90ee90">
+                      <h2 style="margin: 0 20px 0 10px; font-size: 25px; color: rebeccapurple">R$ ' . $row['price'] . '</h2>
+                    </div>
+                    <div class="title" style="text-align: left; position: relative; top: -50px; background-color: white; font-size: 20px; font-weight: bold; color: rebeccapurple">
+                        <h1 style="margin: 0 20px 0 10px; font-size: 20px;">' . $row['title'] . '</h1>
+                    </div>
+                    <div class="category" style="text-align: right; position: relative; top: -45px; background-color: white; font-size: 20px; font-weight: bold; color: rebeccapurple">
+                        <p style="margin: 0 20px 0 10px; font-size: 20px;">Categoria: ' . $row['category'] . '</p>
+                    </div>
+                    <div class="description" style="text-align: left; position: relative; top: -35px; background-color: white; font-size: 20px; font-weight: bold; width: auto; height: auto; color: rebeccapurple; font-family: sans-serif;">
+                        <p style="margin: 0 20px 0 10px; font-size: 15px;">' . $row['description'] . '</p>
+                    </div>
+                </div>';
                     }
                 }
             }
